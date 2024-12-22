@@ -11,7 +11,7 @@ import '../data/datasource/remote/itemsData.dart';
 abstract class HomeController extends GetxController {
   initialData();
   getData();
-  showAllItems(String categoryId, List subCategory);
+  showAllItems(String categoryId);
   changeCat(int val);
 }
 
@@ -22,7 +22,7 @@ class HomeControllerImp extends HomeController {
   ItemsData itemsData = ItemsData(Get.find());
 
   List categories = [];
-  List subcategories = [];
+  List items = [];
   Map<String, List> categoryItems = {}; // خريطة لتخزين العناصر لكل فئة
 
   String? name;
@@ -30,6 +30,8 @@ class HomeControllerImp extends HomeController {
   late PageController pageController;
   int currentIndex = 0;
   String? lang;
+
+  int selectedCat = 0;
 
   @override
   initialData() {
@@ -55,14 +57,28 @@ class HomeControllerImp extends HomeController {
   @override
   getData() async {
     statusRequest = StatusRequest.loading;
-    var response = await homeData.getDataa();
-    debugPrint("=============================== Controller $response ");
+    var response = await homeData.getDataa();  // يتم استرجاع البيانات الخاصة بالفئات والعناصر
+    debugPrint("Response: $response");
     statusRequest = handlingData(response);
+
     if (StatusRequest.success == statusRequest) {
       if (response['status'] == "success") {
-        categories.addAll(response['categories'] ?? []);
-        subcategories.addAll(response['subcategories'] ?? []);
-        await getItems(categories[selectedCat]['categories_id'].toString());
+        categories = response['categories'];  // تخزين الفئات في قائمة categories
+
+        // إنشاء خريطة تحتوي على items لكل categoryId
+        if (response['items'] != null) {
+          for (var category in categories) {
+            // التأكد من استخدام الحقل الصحيح "items_category"
+            categoryItems[category['categories_id'].toString()] = response['items']
+                .where((item) => item['items_category'] == category['categories_id']) // هنا يتم التصفية باستخدام "items_category"
+                .toList();  // ربط كل category بـ items الخاصة بها
+          }
+        }
+        // اختيار أول فئة كافتراضي
+        if (categories.isNotEmpty) {
+          selectedCat = 0;
+          await getItems(categories[selectedCat]['categories_id'].toString());
+        }
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -70,38 +86,43 @@ class HomeControllerImp extends HomeController {
     update();
   }
 
-  int selectedCat = 0;
+
+  getItems(String categoryId) async {
+    statusRequest = StatusRequest.loading;
+    var response = await homeData.getDataa(categoryId: categoryId);  // استخدام categoryId هنا
+    debugPrint("Response for categoryId $categoryId: $response");
+    statusRequest = handlingData(response);
+    if (StatusRequest.success == statusRequest) {
+      if (response['status'] == "success") {
+        items = response['items'] ?? [];  // تخزين العناصر الخاصة بالفئة المحددة
+        print("Items for category $categoryId: $items");
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
+    update();
+  }
+
 
   @override
   changeCat(int val) async {
     selectedCat = val;
-    if (!categoryItems.containsKey(categories[val]['categories_id'].toString())) {
-      await getItems(categories[val]['categories_id'].toString());
-    }
-    update();
-  }
-
-  Future<void> getItems(String categoryId) async {
-    if (categoryItems.containsKey(categoryId)) return; // إذا كانت البيانات موجودة بالفعل فلا نحتاج لتحميلها مرة أخرى
-    statusRequest = StatusRequest.loading;
-    var response = await homeData.getDataa(categoryId: categoryId);
-    debugPrint("=============================== Controller $response ");
-    statusRequest = handlingData(response);
-    if (StatusRequest.success == statusRequest) {
-      if (response['status'] == "success") {
-        categoryItems[categoryId] = response['items']; // تخزين البيانات لكل فئة
-      } else {
-        statusRequest = StatusRequest.failure;
-      }
+    String categoryId = categories[val]['categories_id'].toString();
+    if (categoryItems.containsKey(categoryId)) {
+      // إذا كانت العناصر موجودة في الخريطة
+      items = categoryItems[categoryId] ?? [];
+    } else {
+      // إذا لم تكن موجودة، استرجاع العناصر من الخادم
+      await getItems(categoryId);
     }
     update();
   }
 
   @override
-  showAllItems(categoryId, subCategory) async {
-    var response = await homeData.getDataa();
+  showAllItems(String categoryId) async {
+    var response = await homeData.getDataa(categoryId: categoryId);
     if (response['status'] == "success") {
-      List subCategories = response['subcategories'];
+      List subCategories = response['subcategories'] ?? [];
       Get.toNamed(
         AppRoute.items,
         arguments: {
@@ -112,6 +133,7 @@ class HomeControllerImp extends HomeController {
       );
     }
   }
+
   @override
   void dispose() {
     pageController.dispose();
