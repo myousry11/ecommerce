@@ -122,7 +122,8 @@ class HomeControllerImp extends HomeController {
     update();
   }
 
-  showAllItems(String categoryId) async {
+  @override
+  showAllItems(categoryId) async {
     if (categoryId.isEmpty) {
       debugPrint("Error: categoryId is empty");
       return;
@@ -152,7 +153,6 @@ class HomeControllerImp extends HomeController {
       debugPrint("Error: Failed to fetch data.");
     }
   }
-
 
 
 
