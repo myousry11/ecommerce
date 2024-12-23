@@ -59,7 +59,7 @@ class SubCategory extends GetView<ItemsControllerImp> {
           children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: controller.selectedCat == subCategoriesModel.subCategoriesId ? BoxDecoration(
+              decoration: controller.selectedCatSub == subCategoriesModel.subCategoriesId ? BoxDecoration(
                 border: Border(
                   bottom: BorderSide(width: 3, color: AppColor.primaryColor)
                 )
@@ -68,7 +68,7 @@ class SubCategory extends GetView<ItemsControllerImp> {
                 translateDatabase(subCategoriesModel.subCategoriesNameAr, subCategoriesModel.subCategoriesName),
                 style: TextStyle(
                   fontSize: 13,
-                  color: controller.selectedCat == subCategoriesModel.subCategoriesId ? Colors.blue : AppColor.black,
+                  color: controller.selectedCatSub == subCategoriesModel.subCategoriesId ? Colors.blue : AppColor.black,
                 ),
               ),
             ),

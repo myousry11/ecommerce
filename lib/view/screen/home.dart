@@ -56,8 +56,6 @@ class Home extends StatelessWidget {
                           String categoryId = controller
                               .categories[controller.selectedCat]['categories_id']
                               .toString();
-                           // List? currentItems =
-                           //     controller.categoryItems[categoryId];
                           controller.showAllItems(categoryId);
                         },
                         child: Text(

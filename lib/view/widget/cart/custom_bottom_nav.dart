@@ -1,5 +1,7 @@
+import 'package:ecommerce/controller/cart_controller.dart';
 import 'package:ecommerce/view/widget/cart/custom_button_cart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../core/constant/color.dart';
 import '../productdetails/custom_line_divider.dart';
@@ -7,9 +9,10 @@ class CustomBottomNav extends StatelessWidget {
   final String productPrice;
   final String shipping;
   final String totalPrice;
+  final String discount;
   final TextEditingController controllerCoupon;
   final void Function()? onApplyCoupon;
-  const CustomBottomNav({super.key, required this.productPrice, required this.shipping, required this.totalPrice, required this.controllerCoupon, this.onApplyCoupon});
+  const CustomBottomNav({super.key, required this.productPrice, required this.shipping, required this.totalPrice, required this.controllerCoupon, this.onApplyCoupon, required this.discount});
 
   @override
   Widget build(BuildContext context) {
@@ -29,36 +32,39 @@ class CustomBottomNav extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
+          GetBuilder<CartController>(builder: (controller) =>
+              Container(
             child: TextFormField(
+              style: Theme.of(context).textTheme.bodyMedium,
               controller: controllerCoupon,
               decoration: InputDecoration(
-                hintText: "Have a code? type it here...",
-                hintStyle: TextStyle(
-                  color: Colors.grey, // اللون الرمادي للنص
-                  fontSize: 16, // حجم النص
-                ),
-                suffixIcon: TextButton(
-                  onPressed: onApplyCoupon,
-                  child: Text(
-                    "Validate",
-                    style: TextStyle(
-                      color: Colors.green, // اللون الأخضر لكلمة "Validate"
-                      fontWeight: FontWeight.bold, // النص عريض
+                  hintText: "Have a code? type it here...",
+                  hintStyle: TextStyle(
+                    color: Colors.grey, // اللون الرمادي للنص
+                    fontSize: 16, // حجم النص
+                  ),
+                  suffixIcon: TextButton(
+                    onPressed: onApplyCoupon,
+                    child: Text(
+                      "Validate",
+                      style: TextStyle(
+                        color: Colors.green, // اللون الأخضر لكلمة "Validate"
+                        fontWeight: FontWeight.bold, // النص عريض
+                      ),
                     ),
                   ),
-                ),
-                filled: true,
-                fillColor: Colors.grey.shade100, // اللون الخلفي
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12), // الحواف المستديرة
-                  borderSide: BorderSide.none, // إزالة الحدود
-                ),
-                isDense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10)
+                  filled: true,
+                  fillColor: Colors.grey.shade100, // اللون الخلفي
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12), // الحواف المستديرة
+                    borderSide: BorderSide.none, // إزالة الحدود
+                  ),
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10)
               ),
             ),
 
+          )
           ),
           SizedBox(height: 10),
           Row(
@@ -81,6 +87,22 @@ class CustomBottomNav extends StatelessWidget {
               Text(
                   shipping,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
+          CustomLineDivider(),
+          SizedBox(height: 8,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Discount",
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+              ),
+              Text(
+                discount,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
               ),
             ],
           ),

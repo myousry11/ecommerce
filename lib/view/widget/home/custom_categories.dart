@@ -6,6 +6,7 @@ import 'package:ecommerce/core/functions/translatedatabase.dart';
 import 'package:ecommerce/data/model/categoriesmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constant/color.dart';
 
@@ -37,29 +38,40 @@ class CustomCategoriesListHome extends GetView<HomeControllerImp> {
   }
 }
 
-class Category extends GetView<HomeControllerImp> {
+class Category extends StatefulWidget {
   final int? i;
   final CategoriesModel categoriesModel;
+  final int? Function(int? id)? changeCategory;
   const Category({
     super.key,
     required this.categoriesModel,
-    required this.i,
+    required this.i, this.changeCategory,
   });
 
   @override
+  State<Category> createState() => _CategoryState();
+}
+
+class _CategoryState extends State<Category> {
+  @override
   Widget build(BuildContext context) {
-    String base64String = "${categoriesModel.categoriesImage}";
+    // SharedPreferences sharedPreferences = SharedPreferences.getInstance() as SharedPreferences;
+    int selectedId = 1;
+    String base64String = "${widget.categoriesModel.categoriesImage}";
     Uint8List bytes = base64Decode(base64String);
 
     return GetBuilder<HomeControllerImp>(
       builder: (controller) => GestureDetector(
         onTap: () {
-          controller.changeCat(i!); // استدعاء تغيير الفئة
+          controller.changeCat(widget.i!);
+          setState(() {
+
+          });
         },
         child: Column(
           children: [
             Container(
-              decoration: controller.selectedCat == i
+              decoration: controller.selectedCat == widget.i
                   ? BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(25),
@@ -71,10 +83,10 @@ class Category extends GetView<HomeControllerImp> {
             ),
             const SizedBox(height: 10),
             Text(
-              "${translateDatabase(categoriesModel.categoriesNameAr, categoriesModel.categoriesName)}",
+              "${translateDatabase(widget.categoriesModel.categoriesNameAr, widget.categoriesModel.categoriesName)}",
               style: TextStyle(
                 fontSize: 13,
-                color: controller.selectedCat == i ? Colors.blue : AppColor.black,
+                color: controller.selectedCat == widget.i ? Colors.blue : AppColor.black,
               ),
             ),
           ],

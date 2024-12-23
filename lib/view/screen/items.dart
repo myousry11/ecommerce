@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../data/model/categoriesmodel.dart';
 import '../../data/model/itemsmodel.dart';
+import '../widget/custom_appbar_sub.dart';
 
 class Items extends GetView<ItemsControllerImp> {
   const Items({super.key});
@@ -16,34 +17,14 @@ class Items extends GetView<ItemsControllerImp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.white,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColor.white, // لون الخلفية
-              shape: BoxShape.circle, // تحديد الشكل كدائرة
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.4), // لون الظل
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new_outlined,
-                size: 18,
-              ),
-              onPressed: (){
-                Get.back();
-              },
-            ),
-          ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80), // ارتفاع الـ AppBar
+        child: CustomAppbarSub(
+          title: "Items",
+          onPressed: () {
+            Get.back();
+          },
         ),
-        backgroundColor: AppColor.white,
       ),
       body: Container(
         padding: const EdgeInsets.all(15),
@@ -63,8 +44,11 @@ class Items extends GetView<ItemsControllerImp> {
                     ),
                     itemCount: controller.data.length,
                     itemBuilder: (BuildContext context, index) {
-                      return CustomListItems(
-                        itemsModel: ItemsModel.fromJson(controller.data[index]), active: false,
+                      return Container(
+                        width: double.infinity,
+                        child: CustomListItems(
+                          itemsModel: ItemsModel.fromJson(controller.data[index]), active: false,
+                        ),
                       );
                     }))
               ],

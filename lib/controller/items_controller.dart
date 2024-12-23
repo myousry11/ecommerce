@@ -9,7 +9,7 @@ import '../core/functions/handlingdata_controller.dart';
 
 abstract class ItemsController extends GetxController {
   initialData();
-  getItems(String categoryId);
+  getItems(String subCategoryId);
   goToPageProduct(ItemsModel itemsModel);
 }
 
@@ -17,12 +17,13 @@ class ItemsControllerImp extends ItemsController {
   List categories = [];
   List<SubCategoriesModel> subCategories = [];
   List items = [];
-  int? selectedCat;
+  int? selectedCatSub;
   String? catId;
   StatusRequest statusRequest = StatusRequest.none;
   ItemsData itemsData = ItemsData(Get.find());
   List data = [];
-  // String? lang;
+
+  int? select;
 
   @override
   void onInit() {
@@ -33,44 +34,42 @@ class ItemsControllerImp extends ItemsController {
   @override
   initialData() {
     // تحقق من وجود البيانات في Get.arguments
-    // if (Get.arguments == null || !Get.arguments!.containsKey('catid') || !Get.arguments!.containsKey('subCategory')) {
-    //   print('Error: Missing required arguments');
-    //   return;
-    // }
+
 
     catId = Get.arguments!['catid'];
+    print("cat id ======== ${catId}");
     subCategories = (Get.arguments!['subCategory'] as List<dynamic>)
         .map(
           (e) => SubCategoriesModel.fromJson(e as Map<String, dynamic>),
     )
         .toList();
-    selectedCat = subCategories.isNotEmpty ? subCategories.first.subCategoriesId : null;
-    // lang = Get.arguments!['lang'];
+    selectedCatSub = subCategories.isNotEmpty ? subCategories.first.subCategoriesId : null;
 
-    // تحقق من أن selectedCat ليس null قبل استدعاء getItems
-    if (selectedCat != null) {
-      getItems(selectedCat!.toString());
+
+    if (selectedCatSub != null) {
+      getItems(selectedCatSub!.toString());
     } else {
       print('Error: selectedCat is null');
     }
   }
 
   void changeSubCategory(int index, String subCategoryId) {
-    selectedCat = subCategories[index].subCategoriesId;
-    getItems(selectedCat.toString());
+    selectedCatSub = subCategories[index].subCategoriesId;
+    getItems(selectedCatSub.toString());
     update();
   }
 
   @override
-  getItems(categoryId) async {
+  getItems(subCategoryId) async {
     data.clear();
     statusRequest = StatusRequest.loading;
-    var response = await itemsData.getSubCategoryData(categoryId);
+    var response = await itemsData.getSubCategoryData(subCategoryId);
     print("=============================== Controller $response ");
     statusRequest = handlingData(response);
     if (StatusRequest.success == statusRequest) {
       if (response['status'] == "success") {
-        data.addAll(response['data']);
+        // جلب العناصر المرتبطة بالفئة الفرعية
+        data.addAll(response['data'] ?? []);
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -78,8 +77,15 @@ class ItemsControllerImp extends ItemsController {
     update();
   }
 
+
   @override
   goToPageProduct(itemsModel) {
     Get.toNamed(AppRoute.productDetails, arguments: {"itemsmodel": itemsModel});
+  }
+
+  @override
+  void dispose() {
+    data.clear();
+    super.dispose();
   }
 }

@@ -1,7 +1,9 @@
+import 'dart:math';
 import 'package:ecommerce/core/class/statusrequest.dart';
 import 'package:ecommerce/core/functions/handlingdata_controller.dart';
 import 'package:ecommerce/core/services/services.dart';
 import 'package:ecommerce/data/datasource/remote/homedata.dart';
+import 'package:ecommerce/data/model/itemsmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +15,7 @@ abstract class HomeController extends GetxController {
   getData();
   showAllItems(String categoryId);
   changeCat(int val);
+  goToPageProduct(ItemsModel itemsModel);
 }
 
 class HomeControllerImp extends HomeController {
@@ -22,6 +25,7 @@ class HomeControllerImp extends HomeController {
   ItemsData itemsData = ItemsData(Get.find());
 
   List categories = [];
+  List subCategories = [];
   List items = [];
   Map<String, List> categoryItems = {}; // خريطة لتخزين العناصر لكل فئة
 
@@ -31,14 +35,14 @@ class HomeControllerImp extends HomeController {
   int currentIndex = 0;
   String? lang;
 
-  int selectedCat = 0;
+  int selectedCat = 1;
 
   @override
   initialData() {
     lang = myServices.sharedPreferences.getString("lang");
     name = myServices.sharedPreferences.getString("name") ?? "Guest";
     email = myServices.sharedPreferences.getString("email") ?? "guest@example.com";
-    selectedCat = myServices.sharedPreferences.getInt('selectedCat') ?? 0;
+    selectedCat = (categories.isNotEmpty) ? 0 : 1;
   }
 
   @override
@@ -57,24 +61,24 @@ class HomeControllerImp extends HomeController {
   @override
   getData() async {
     statusRequest = StatusRequest.loading;
-    var response = await homeData.getDataa();  // يتم استرجاع البيانات الخاصة بالفئات والعناصر
+    var response = await homeData.getDataa(); // يتم استرجاع البيانات الخاصة بالفئات والعناصر
     debugPrint("Response: $response");
     statusRequest = handlingData(response);
 
     if (StatusRequest.success == statusRequest) {
       if (response['status'] == "success") {
-        categories = response['categories'];  // تخزين الفئات في قائمة categories
+        categories = response['categories'] ?? [];
+        subCategories = response['subcategories'] ?? [];
 
-        // إنشاء خريطة تحتوي على items لكل categoryId
         if (response['items'] != null) {
+          // ربط العناصر بالفئات الفرعية
           for (var category in categories) {
-            // التأكد من استخدام الحقل الصحيح "items_category"
             categoryItems[category['categories_id'].toString()] = response['items']
-                .where((item) => item['items_category'] == category['categories_id']) // هنا يتم التصفية باستخدام "items_category"
-                .toList();  // ربط كل category بـ items الخاصة بها
+                .where((item) => item['items_category'] == category['categories_id'])
+                .toList();
           }
         }
-        // اختيار أول فئة كافتراضي
+
         if (categories.isNotEmpty) {
           selectedCat = 0;
           await getItems(categories[selectedCat]['categories_id'].toString());
@@ -86,16 +90,16 @@ class HomeControllerImp extends HomeController {
     update();
   }
 
-
   getItems(String categoryId) async {
     statusRequest = StatusRequest.loading;
-    var response = await homeData.getDataa(categoryId: categoryId);  // استخدام categoryId هنا
+    var response = await homeData.getDataa();
     debugPrint("Response for categoryId $categoryId: $response");
+
     statusRequest = handlingData(response);
     if (StatusRequest.success == statusRequest) {
       if (response['status'] == "success") {
-        items = response['items'] ?? [];  // تخزين العناصر الخاصة بالفئة المحددة
-        print("Items for category $categoryId: $items");
+        // تحميل العناصر الخاصة بالفئة
+        categoryItems[categoryId] = response['items'] ?? [];
       } else {
         statusRequest = StatusRequest.failure;
       }
@@ -103,40 +107,65 @@ class HomeControllerImp extends HomeController {
     update();
   }
 
-
   @override
   changeCat(int val) async {
     selectedCat = val;
-    String categoryId = categories[val]['categories_id'].toString();
-    if (categoryItems.containsKey(categoryId)) {
-      // إذا كانت العناصر موجودة في الخريطة
-      items = categoryItems[categoryId] ?? [];
-    } else {
-      // إذا لم تكن موجودة، استرجاع العناصر من الخادم
-      await getItems(categoryId);
+    if (categories.isNotEmpty) {
+      String categoryId = categories[val]['categories_id'].toString();
+      if (categoryItems.containsKey(categoryId)) {
+        // تحميل العناصر من الخريطة إذا كانت موجودة
+        items = categoryItems[categoryId] ?? [];
+      } else {
+        await getItems(categoryId);
+      }
     }
     update();
   }
 
-  @override
   showAllItems(String categoryId) async {
-    var response = await homeData.getDataa(categoryId: categoryId);
+    if (categoryId.isEmpty) {
+      debugPrint("Error: categoryId is empty");
+      return;
+    }
+
+    var response = await homeData.getDataa();
+    debugPrint("Response: $response");  // طباعة الاستجابة الكاملة
+
     if (response['status'] == "success") {
-      List subCategories = response['subcategories'] ?? [];
+      // تصفية الفئات الفرعية المرتبطة بالفئة فقط
+      List subCategories = response['subcategories']?.where((sub) {
+        // debugPrint("Checking subcategory: ${sub['subcategories_category']} for categoryId: $categoryId");
+        return sub['subcategories_category'].toString() == categoryId;  // تأكد من أن النوع متطابق
+      }).toList() ?? [];
+
+      // debugPrint("Filtered Subcategories: $subCategories");  // طباعة الفئات الفرعية بعد التصفية
+
+      // إرسال البيانات عبر Get.toNamed
       Get.toNamed(
         AppRoute.items,
         arguments: {
           "catid": categoryId,
           "subCategory": subCategories,
-          // "items" : items,
         },
       );
+    } else {
+      debugPrint("Error: Failed to fetch data.");
     }
+  }
+
+
+
+
+
+  @override
+  goToPageProduct(itemsModel) {
+    Get.toNamed(AppRoute.productDetails, arguments: {"itemsmodel": itemsModel});
   }
 
   @override
   void dispose() {
     pageController.dispose();
+    categories.clear();
     super.dispose();
   }
 }

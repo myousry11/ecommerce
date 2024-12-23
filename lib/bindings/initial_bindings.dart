@@ -39,7 +39,7 @@ class AppBindings extends Bindings {
     // Get.put(TestController());
     Get.put(HomeControllerImp(), permanent: true);
     Get.lazyPut(() => HomeScreenControllerImp(), fenix: true);
-    Get.lazyPut(() => ItemsControllerImp());
+    Get.lazyPut(() => ItemsControllerImp(), fenix: true);
     Get.lazyPut(() => ProductDetailsControllerImp(), fenix: true);
     Get.lazyPut(() => CartController(), fenix: true);
     Get.lazyPut(() => SearchControllerImp(), fenix: true);

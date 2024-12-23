@@ -7,6 +7,7 @@ import 'package:ecommerce/core/functions/handlingdata_controller.dart';
 import 'package:ecommerce/core/services/services.dart';
 import 'package:ecommerce/data/datasource/remote/cart_data.dart';
 import 'package:ecommerce/data/model/cartmodel.dart';
+import 'package:ecommerce/data/model/couponmodel.dart';
 import 'package:ecommerce/view/widget/productdetails/custom_alert_product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,10 @@ class CartController extends GetxController {
   late StatusRequest statusRequest;
 
   TextEditingController? controllerCoupon;
+  CouponModel? couponModel;
+  int? discountCoupon = 0;
+  String? couponName;
+
 
   // int countItems = 1;
   List<CartModel> data = [];
@@ -106,18 +111,35 @@ class CartController extends GetxController {
     view();
   }
 
-  checkCoupon() async{
+  checkCoupon() async {
     statusRequest = StatusRequest.loading;
     update();
-    var response = await cartData.checkCoupon(controllerCoupon!.text);
-    print("============ Delete Product Response: $response");
-    statusRequest = handlingData(response);
 
-    if (StatusRequest.success == statusRequest && response['status'] == "success") {
-    } else {
-      statusRequest = StatusRequest.failure;
+    var response = await cartData.checkCoupon(controllerCoupon!.text);
+    print("=============================== Controller $response ");
+    statusRequest = handlingData(response);
+    if (StatusRequest.success == statusRequest) {
+      // Start backend
+      if (response['status'] == "success") {
+        Map<String, dynamic> dataCoupon = response['data'];
+        couponModel = CouponModel.fromJson(dataCoupon);
+        discountCoupon = couponModel!.couponDiscount!;
+        couponName = couponModel!.couponName;
+        // couponId = couponModel!.couponId;
+      } else {
+        // statusRequest = StatusRequest.failure;
+         discountCoupon = 0;
+        couponName = null;
+        // couponid = null;
+        Get.snackbar("Warning", "Coupon Not Valid") ;
+      }
+      // End
     }
     update();
+  }
+
+  getTotalPrice(){
+    return (priceOrders - priceOrders * discountCoupon! / 100);
   }
 
   @override

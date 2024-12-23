@@ -57,9 +57,12 @@ class Cart extends StatelessWidget {
               )),
       bottomNavigationBar: GetBuilder<CartController>(
           builder: (controller) => CustomBottomNav(
+            onApplyCoupon: (){
+              controller.checkCoupon();
+            },
               productPrice: "${controller.priceOrders}",
               shipping: "Freeship",
-              totalPrice: "110", controllerCoupon: controller.controllerCoupon!,)),
+              totalPrice: "${controller.getTotalPrice()}", controllerCoupon: controller.controllerCoupon!, discount: '${controller.discountCoupon}',)),
     );
   }
 }
