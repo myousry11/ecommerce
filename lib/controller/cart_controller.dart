@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../core/functions/bottomsheet.dart';
 import '../data/model/itemsmodel.dart';
 
 class CartController extends GetxController {
@@ -25,6 +26,7 @@ class CartController extends GetxController {
   CouponModel? couponModel;
   int? discountCoupon = 0;
   String? couponName;
+  String? couponId;
 
 
   // int countItems = 1;
@@ -43,8 +45,8 @@ class CartController extends GetxController {
 
     if (StatusRequest.success == statusRequest && response['status'] == "success") {
       Get.rawSnackbar(
-        title: "Notification",
-        messageText: Text("The product has been removed from the cart.", style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(color: AppColor.white, fontSize: 15),),
+        title: "173".tr,
+        messageText: Text("174".tr, style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(color: AppColor.white, fontSize: 15),),
       );
       await view(); // تحديث السلة بعد الحذف
       // حفظ السلة بعد التحديث
@@ -68,8 +70,8 @@ class CartController extends GetxController {
       // saveCartData(data);
 
       Get.rawSnackbar(
-        title: "Notification",
-        messageText: Text("The product has been added from the cart.", style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(color: AppColor.white, fontSize: 15),),
+        title: "173".tr,
+        messageText: Text("175".tr, style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(color: AppColor.white, fontSize: 15),),
       );
     } else {
       statusRequest = StatusRequest.failure;
@@ -118,29 +120,62 @@ class CartController extends GetxController {
     var response = await cartData.checkCoupon(controllerCoupon!.text);
     print("=============================== Controller $response ");
     statusRequest = handlingData(response);
+
     if (StatusRequest.success == statusRequest) {
-      // Start backend
       if (response['status'] == "success") {
         Map<String, dynamic> dataCoupon = response['data'];
         couponModel = CouponModel.fromJson(dataCoupon);
         discountCoupon = couponModel!.couponDiscount!;
         couponName = couponModel!.couponName;
-        // couponId = couponModel!.couponId;
-      } else {
-        // statusRequest = StatusRequest.failure;
-         discountCoupon = 0;
+        couponId = couponModel!.couponId.toString();
+        Get.snackbar("176".tr, "177".tr, snackPosition: SnackPosition.BOTTOM);
+      } else if (response['status'] == "expired_time") {
+        discountCoupon = 0;
+        Get.snackbar("159".tr, "178".tr, snackPosition: SnackPosition.BOTTOM);
+      } else if (response['status'] == "expired_count") {
+        discountCoupon = 0;
+        Get.snackbar("159".tr, "179".tr, snackPosition: SnackPosition.BOTTOM);
+      } else if (response['status'] == "not_valid") {
+        discountCoupon = 0;
         couponName = null;
-        // couponid = null;
-        Get.snackbar("Warning", "Coupon Not Valid") ;
+        couponId = null;
+        Get.snackbar("159".tr, "180".tr, snackPosition: SnackPosition.BOTTOM);
       }
-      // End
     }
     update();
   }
 
+
+
   getTotalPrice(){
     return (priceOrders - priceOrders * discountCoupon! / 100);
   }
+
+  goToCheckOut(BuildContext context) {
+    if(data.isEmpty) {
+      return showCustomBottomSheet(
+      context: context,
+      onPressed: () {
+        Get.back();
+      },
+      lottieAsset: 'assets/lottie/wrong.json',
+      title: "159".tr,
+      textBody: "181".tr,
+      textButton: "182".tr,
+    );
+    }
+
+    Get.offAllNamed(
+      AppRoute.checkOut,
+      arguments: {
+        "priceOrders": priceOrders,
+        "couponid": couponId ?? "0",
+        "totalPrice": getTotalPrice(),
+        "discountcoupon" : discountCoupon.toString(),
+      },
+    );
+  }
+
 
   @override
   void onInit() {
@@ -151,7 +186,7 @@ class CartController extends GetxController {
   }
 
   backToHome(){
-    Get.offNamed(AppRoute.home);
+    Get.offAllNamed(AppRoute.home);
   }
 }
 

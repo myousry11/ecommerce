@@ -22,6 +22,7 @@ class SignUp extends GetView<AppBindings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white,
       body: WillPopScope(
         onWillPop: alertExitApp,
         child: SafeArea(

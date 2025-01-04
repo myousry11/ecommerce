@@ -34,8 +34,8 @@ class ForgetPasswordControllerImp extends ForgetPasswordController {
         }
         else{
           Get.defaultDialog(
-              title: "Warning",
-              middleText: "Email  not correct"
+              title: "159".tr,
+              middleText: "185".tr
           );
         }
       }

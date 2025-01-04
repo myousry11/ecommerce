@@ -16,6 +16,7 @@ class VerifySignup extends GetView<VerifySignupControllerImp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white,
       appBar: AppBar(),
       body: GetBuilder<VerifySignupControllerImp>(
           builder: (controller) => controller.statusRequest ==

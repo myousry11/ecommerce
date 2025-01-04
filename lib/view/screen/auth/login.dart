@@ -19,16 +19,14 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-      ),
+      backgroundColor: AppColor.white,
       body: WillPopScope(
                     onWillPop: alertExitApp,
                     child: GetBuilder<LoginControllerImp>(builder: (controller) =>
                     HandlingDataRequest(statusRequest: controller.statusRequest, widget:
                         Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 40, horizontal: 30),
+                          vertical: 80, horizontal: 30),
                       child: Form(
                         key: controller.formState3,
                         child: ListView(

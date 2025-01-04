@@ -1,5 +1,6 @@
 import 'package:ecommerce/core/constant/routes.dart';
 import 'package:ecommerce/core/services/services.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 
 abstract class ProfileController extends GetxController{
@@ -29,6 +30,9 @@ class ProfileControllerImp extends ProfileController{
 
   @override
   logout() {
+    String userId = myServices.sharedPreferences.getString("id")!;
+    FirebaseMessaging.instance.unsubscribeFromTopic("users");
+    FirebaseMessaging.instance.unsubscribeFromTopic("users${userId}");
     myServices.sharedPreferences.setString("step", "1");
     Get.offAllNamed(AppRoute.login);
   }

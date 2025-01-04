@@ -22,7 +22,7 @@ class CustomButtonAppbar extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             width: 30,
             height: 30,
             child: ColorFiltered(

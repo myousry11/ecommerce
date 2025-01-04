@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../../../../bindings/initial_bindings.dart';
 import '../../../../core/class/handlingdata_view.dart';
+import '../../../../core/constant/color.dart';
 import '../../../../core/functions/valid_input.dart';
 
 class ForgetPassword extends GetView<AppBindings> {
@@ -17,6 +18,7 @@ class ForgetPassword extends GetView<AppBindings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white,
       appBar: AppBar(),
       body: GetBuilder<ForgetPasswordControllerImp>(
         builder: (controller) => HandlingDataRequest(

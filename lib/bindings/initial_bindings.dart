@@ -4,13 +4,18 @@ import 'package:ecommerce/controller/address/add_details_controller.dart';
 import 'package:ecommerce/controller/address/view_controller.dart';
 import 'package:ecommerce/controller/auth/verify_signup_controller.dart';
 import 'package:ecommerce/controller/cart_controller.dart';
+import 'package:ecommerce/controller/checkout_controller.dart';
 import 'package:ecommerce/controller/forgetpassword/forget_password_controller.dart';
 import 'package:ecommerce/controller/forgetpassword/reset_password_controller.dart';
 import 'package:ecommerce/controller/auth/signup_controller.dart';
 import 'package:ecommerce/controller/forgetpassword/verify_password_controller.dart';
 import 'package:ecommerce/controller/home_controller.dart';
 import 'package:ecommerce/controller/items_controller.dart';
+import 'package:ecommerce/controller/notification_controller.dart';
 import 'package:ecommerce/controller/onboarding_controller.dart';
+import 'package:ecommerce/controller/orders/order_pending_controller.dart';
+import 'package:ecommerce/controller/orders/orders_delivered_controller.dart';
+import 'package:ecommerce/controller/orders/orders_details_controller.dart';
 import 'package:ecommerce/controller/productdetails_controller.dart';
 import 'package:ecommerce/controller/profile_controller.dart';
 import 'package:ecommerce/controller/searchcontroller.dart';
@@ -22,7 +27,9 @@ import 'package:ecommerce/controller/getstarted_controller.dart';
 
 import '../../controller/auth/login_controller.dart';
 import '../controller/auth/test_controller.dart';
-import '../controller/home_screen_controller.dart'; // تأكد من تعديل المسار إذا لزم الأمر.
+import '../controller/home_screen_controller.dart';
+import '../controller/orders/orders_cancel_controller.dart';
+import '../controller/orders/orderview_controller.dart'; // تأكد من تعديل المسار إذا لزم الأمر.
 
 class AppBindings extends Bindings {
   @override
@@ -47,6 +54,13 @@ class AppBindings extends Bindings {
     Get.lazyPut(() => AddAddressController(), fenix: true);
     Get.lazyPut(() => AddAddressDetailsController(), fenix: true);
     Get.lazyPut(() => AddressViewController(), fenix: true);
+    Get.lazyPut(() => CheckoutController(), fenix: true);
+    Get.lazyPut(() => OrdersPendingController(), fenix: true);
+    Get.lazyPut(() => OrderController(), fenix: true);
+    Get.lazyPut(() => NotificationController(), fenix: true);
+    Get.lazyPut(() => OrdersDetailsController(), fenix: true);
+    Get.lazyPut(() => OrdersDeliveredController(), fenix: true);
+    Get.lazyPut(() => OrdersCancelController(), fenix: true);
 
 
   }

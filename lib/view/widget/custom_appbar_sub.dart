@@ -45,7 +45,7 @@ class CustomAppbarSub extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .headlineSmall!
-                  .copyWith(fontSize: 20),
+                  .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
             ),
             const SizedBox(width: 48), // مساحة لضمان التوازن إذا لم يكن هناك عنصر آخر.
           ],

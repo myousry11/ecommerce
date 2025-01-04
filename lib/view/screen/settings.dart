@@ -16,45 +16,36 @@ class Settings extends StatelessWidget {
       backgroundColor: AppColor.white,
         body: ListView(
           children: [
-            CustomAppbarSub(title: "Setting", onPressed: (){
+            CustomAppbarSub(title: "64".tr, onPressed: (){
               Get.offAllNamed(AppRoute.home);
             },),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40.0),
               child: Column(
                 children: [
                   CustomSettingsItems(
                       image: "assets/icons/world.png",
-                      title: "Language",
+                      title: "75".tr,
                       function: (){
                         Get.dialog(const CustomSettingsLanguage());
                       }
                   ),
-                  SizedBox(height: 15,),
-                  CustomLineDivider(),
-                  SizedBox(height: 15,),
-                  CustomSettingsItems(
-                      image: "assets/icons/bell.png",
-                      title: "Notification",
-                      function: (){
-                      }
-                  ),
-                  SizedBox(height: 15,),
-                  CustomLineDivider(),
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 15,),
+                  const CustomLineDivider(),
+                  const SizedBox(height: 15,),
                   CustomSettingsItems(
                       image: "assets/icons/clipboard.png",
-                      title: "Terms of Use",
+                      title: "76".tr,
                       function: (){
                       }
                   ),
-                  SizedBox(height: 15,),
-                  CustomLineDivider(),
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 15,),
+                  const CustomLineDivider(),
+                  const SizedBox(height: 15,),
                   CustomSettingsItems(
                       image: "assets/icons/policy.png",
-                      title: "Privacy Policy",
+                      title: "77".tr,
                       function: (){
                       }
                   ),

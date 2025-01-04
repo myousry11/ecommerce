@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ecommerce/bindings/initial_bindings.dart';
 import 'package:ecommerce/controller/home_screen_controller.dart';
 import 'package:ecommerce/core/constant/color.dart';
@@ -19,10 +21,10 @@ class HomeScreen extends GetView<AppBindings> {
     return GetBuilder<HomeScreenControllerImp>(
       builder: (controller) => Scaffold(
         backgroundColor: AppColor.white,
-        key: scaffoldKey, // ربط الـ Scaffold بالـ GlobalKey
+        key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
-
+          backgroundColor: AppColor.primaryColor,
           onPressed: () {
             controller.goToCart();
           },
@@ -30,17 +32,34 @@ class HomeScreen extends GetView<AppBindings> {
           child: Image.asset("assets/icons/cart.png", height: 30,),
         ),
          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         appBar: CustomAppBar(
-          title: "GemStore",
+          title: controller.titleAppBar[controller.currentPage],
           leadingTab: () {
-            scaffoldKey.currentState?.openDrawer(); // فتح الـ Drawer باستخدام GlobalKey
+            scaffoldKey.currentState?.openDrawer();
           },
           actionTab: () {
-            print("Notification clicked");
+            controller.getToNotifyView();
           },
         ),
-        body: controller.listPage.elementAt(controller.currentPage),
+        body: WillPopScope(
+            child: controller.listPage.elementAt(controller.currentPage),
+            onWillPop: (){
+              Get.defaultDialog(
+                backgroundColor: AppColor.white,
+                  title: "159".tr,
+                  titleStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColor.primaryColor),
+                  middleText: "201".tr,
+                  middleTextStyle: Theme.of(context).textTheme.bodySmall,
+                onConfirm: (){
+                    exit(0);
+                },
+                  buttonColor: AppColor.primaryColor,
+                onCancel: (){}
+              );
+              return Future.value(false);
+            }
+        ),
 
         bottomNavigationBar: const CustomBottomAppBarHome(),
       ),

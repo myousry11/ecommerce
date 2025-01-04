@@ -73,7 +73,7 @@ class _CategoryState extends State<Category> {
             Container(
               decoration: controller.selectedCat == widget.i
                   ? BoxDecoration(
-                color: Colors.blue,
+                color: AppColor.primaryColor,
                 borderRadius: BorderRadius.circular(25),
               )
                   : null,

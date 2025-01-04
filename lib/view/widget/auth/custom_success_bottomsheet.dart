@@ -30,7 +30,7 @@ class BottomSheetContent extends StatelessWidget {
           ),
           Text(textBody, textAlign: TextAlign.center,style: Theme.of(context).textTheme.bodySmall,),
           const SizedBox(height: 20),
-          Container(
+          SizedBox(
             height: 50,
             width: 150,
             child: MaterialButton(

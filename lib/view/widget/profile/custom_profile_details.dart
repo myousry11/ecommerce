@@ -16,16 +16,16 @@ class CustomProfileDetails extends GetView<ProfileControllerImp> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             backgroundColor: Colors.grey.shade200,
             radius: 30, // التحكم بحجم الصورة
-            child: Icon(Icons.person, color: Colors.black, size: 40),
+            child: const Icon(Icons.person, color: Colors.black, size: 40),
           ),
-          SizedBox(width: 15), // المسافة بين الصورة والنص
+          const SizedBox(width: 15), // المسافة بين الصورة والنص
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

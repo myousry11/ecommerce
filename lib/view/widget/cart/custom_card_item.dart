@@ -20,14 +20,14 @@ class CartItem extends StatelessWidget {
     // String base64String = controller.itemsModel.itemsImage ?? "";
 // Uint8List? bytes =
 // base64String.isNotEmpty ? base64Decode(base64String) : null;
-    return Container(
+    return SizedBox(
       height: 135,
       child: Card(
         color: AppColor.white,
         elevation: 5,
-        margin: EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -40,7 +40,7 @@ class CartItem extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 flex: 2,
                 child: Column(
@@ -48,17 +48,17 @@ class CartItem extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       price,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       "Size: $size | Color: $color",
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -68,12 +68,12 @@ class CartItem extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Container(
                       height: 35,
                       width: 90,
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      margin: EdgeInsets.only(bottom: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      margin: const EdgeInsets.only(bottom: 5),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(20),
@@ -84,23 +84,23 @@ class CartItem extends StatelessWidget {
                           Expanded(
                             child: IconButton(
                               onPressed: onRemove,
-                              icon: Icon(Icons.remove, size: 15),
+                              icon: const Icon(Icons.remove, size: 15),
                               padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
+                              constraints: const BoxConstraints(),
                             ),
                           ),
                           Expanded(
                               child: Text(
                                 count,
-                                style: TextStyle(fontSize: 15),
+                                style: const TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center,
                               )),
                           Expanded(
                             child: IconButton(
                               onPressed: onAdd,
-                              icon: Icon(Icons.add, size: 15),
+                              icon: const Icon(Icons.add, size: 15),
                               padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
+                              constraints: const BoxConstraints(),
                             ),
                           ),
                         ],

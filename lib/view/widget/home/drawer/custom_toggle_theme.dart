@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 class CustomToggleTheme extends StatefulWidget {
   const CustomToggleTheme({super.key});
 
@@ -21,7 +22,7 @@ class _CustomToggleThemeState extends State<CustomToggleTheme> {
         children: [
           // النص والأيقونة للوضع غير المختار داخل الحاوية الرمادية
           Row(
-            mainAxisAlignment: isDarkMode ? MainAxisAlignment.start : MainAxisAlignment.end,
+            mainAxisAlignment: isDarkMode ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
@@ -34,10 +35,10 @@ class _CustomToggleThemeState extends State<CustomToggleTheme> {
                       size: 20,
                       color: Colors.grey,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
-                      isDarkMode ? "Light" : "Dark",
-                      style: TextStyle(
+                      isDarkMode ? "68".tr : "69".tr,
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 14,
                       ),
@@ -49,7 +50,7 @@ class _CustomToggleThemeState extends State<CustomToggleTheme> {
           ),
           // الجزء المتحرك الذي يعبر عن الوضع الحالي
           AnimatedAlign(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             alignment: isDarkMode ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
               width: 100,
@@ -61,7 +62,7 @@ class _CustomToggleThemeState extends State<CustomToggleTheme> {
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
                     blurRadius: 5,
-                    offset: Offset(0, 2),
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
@@ -75,10 +76,10 @@ class _CustomToggleThemeState extends State<CustomToggleTheme> {
                     size: 20,
                     color: Colors.black,
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   Text(
-                    isDarkMode ? "Dark" : "Light",
-                    style: TextStyle(
+                    isDarkMode ? "69".tr : "68".tr,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

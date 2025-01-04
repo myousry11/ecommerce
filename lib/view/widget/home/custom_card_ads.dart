@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'custom_images_ads.dart';
-class CustomCardAds extends GetView<HomeControllerImp> {
+class CustomCardAds extends StatelessWidget {
   const CustomCardAds({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return GetBuilder<HomeControllerImp>(builder: (controller)=> Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Container(
             width: double.infinity,
             height: 220,
@@ -27,18 +27,18 @@ class CustomCardAds extends GetView<HomeControllerImp> {
                   controller: controller.pageController,
                   physics: const BouncingScrollPhysics(),
                   onPageChanged: controller.onPageChanged,
-                  children: const [
+                  children: [
                     CustomAdsImage(
                       imagePath: 'assets/images/home/ads1.png',
-                      title: 'Autumn      \nCollection \n2012    ',
+                      title: '${"51".tr}      \n${"54".tr} \n2024    ',
                     ),
                     CustomAdsImage(
                       imagePath: 'assets/images/home/ad2.jpg',
-                      title: 'Summer      \nCollection \n2012    ',
+                      title: '${"52".tr}      \n${"54".tr} \n2024    ',
                     ),
                     CustomAdsImage(
                       imagePath: 'assets/images/home/ads3.jpg',
-                      title: 'Winter      \nCollection \n2012    ',
+                      title: '${"53".tr}      \n${"54".tr} \n2024    ',
                     ),
                   ],
                 ),
@@ -64,6 +64,6 @@ class CustomCardAds extends GetView<HomeControllerImp> {
           ),
         ),
       ],
-    );
+    ));
   }
 }

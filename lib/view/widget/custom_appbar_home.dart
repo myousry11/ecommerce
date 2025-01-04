@@ -17,6 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       forceMaterialTransparency: true,
       title: Text(title),
+      titleTextStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 22, fontWeight: FontWeight.w700),
       centerTitle: true,
       leading: GestureDetector(
         onTap: leadingTab,

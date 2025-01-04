@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:ecommerce/controller/cart_controller.dart';
+import 'package:ecommerce/data/model/Itemsreviewmodel.dart';
 import 'package:ecommerce/data/model/itemsmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,9 @@ import '../core/constant/routes.dart';
 import '../core/functions/handlingdata_controller.dart';
 import '../core/services/services.dart';
 import '../data/datasource/remote/cart_data.dart';
+import '../data/datasource/remote/itemsData.dart';
 import '../view/widget/productdetails/custom_alert_product.dart';
+import 'items_controller.dart';
 
 abstract class ProductDetailsController extends GetxController{
   toggleDescription();
@@ -20,9 +23,11 @@ class ProductDetailsControllerImp extends ProductDetailsController{
   late ItemsModel itemsModel;
   MyServices myServices = Get.find();
   String? lang;
-  late StatusRequest statusRequest;
+  StatusRequest statusRequest = StatusRequest.none;
   CartData cartData = CartData(Get.find());
+  ItemsData itemsData = ItemsData(Get.find());
 
+  late ItemsControllerImp itemsController; // إضافة controller الخاص بـ Items
 
 
   // CartController cartController = Get.put(CartController());
@@ -33,6 +38,7 @@ class ProductDetailsControllerImp extends ProductDetailsController{
   String? selectedSize;
 
   bool isDescriptionExpanded = false;
+  bool isReviewExpanded = false;
 
 
   void selectColor(Color color) {
@@ -57,9 +63,9 @@ class ProductDetailsControllerImp extends ProductDetailsController{
 
       Get.dialog(
         CustomAlertProduct(
-          title: "Successfully Completed",
-          text1: "Go To Cart",
-          text2: "Continue Shopping",
+          title: "170".tr,
+          text1: "169".tr,
+          text2: "104".tr,
           onPressed1: () {
             Get.offNamed(AppRoute.cart);
           },
@@ -74,9 +80,43 @@ class ProductDetailsControllerImp extends ProductDetailsController{
     update();
   }
 
+  Map<String, dynamic> getReviews() {
+    var ratingData = itemsController.ratings[itemsModel.itemsId] ?? {};
+    double averageRating = ratingData['average'] ?? 0.0;
+    int reviewCount = ratingData['count'] ?? 0;
+    return {'averageRating': averageRating, 'reviewCount': reviewCount};
+  }
+
+  List<ItemReviews> reviewsList = [];
+
+  getReviewsFromServer(String itemId) async {
+    var response = await itemsData.viewReview(itemId);
+    print("============ Add Product Response: $response");
+    if (response['status'] == "success") {
+      reviewsList = response['data'].map<ItemReviews>((e) => ItemReviews.fromJson(e)).toList();
+    } else {
+      reviewsList = [];
+    }
+    update();
+  }
+
+  addRating(String itemId, double rating, String comment) async {
+    var response = await itemsData.addReview(myServices.sharedPreferences.getString("id")!, itemId, rating.toString(), comment );
+    print("================= ADD Review $response");
+    if(StatusRequest.success == statusRequest) {
+      if (response['status'] == "success") {
+        itemsController.goToPageProduct(itemsModel);
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
+    update();
+  }
+
   initialData(){
     lang = myServices.sharedPreferences.getString("lang");
     itemsModel = Get.arguments['itemsmodel'];
+    itemsController = Get.find<ItemsControllerImp>();
   }
   @override
   void onInit() {
@@ -87,6 +127,12 @@ class ProductDetailsControllerImp extends ProductDetailsController{
   @override
   toggleDescription() {
     isDescriptionExpanded = !isDescriptionExpanded;
+    update();
+  }
+
+  toggleReview() {
+    isReviewExpanded = !isReviewExpanded;
+    getReviewsFromServer(itemsModel.itemsId.toString());
     update();
   }
 }

@@ -38,11 +38,12 @@ class ItemsControllerImp extends ItemsController {
 
     catId = Get.arguments!['catid'];
     print("cat id ======== ${catId}");
-    subCategories = (Get.arguments!['subCategory'] as List<dynamic>)
-        .map(
+    subCategories = (Get.arguments['subCategory'] as List<dynamic>?)
+        ?.map(
           (e) => SubCategoriesModel.fromJson(e as Map<String, dynamic>),
     )
-        .toList();
+        .toList() ??
+        [];
     selectedCatSub = subCategories.isNotEmpty ? subCategories.first.subCategoriesId : null;
 
 
@@ -68,13 +69,29 @@ class ItemsControllerImp extends ItemsController {
     statusRequest = handlingData(response);
     if (StatusRequest.success == statusRequest) {
       if (response['status'] == "success") {
-        // جلب العناصر المرتبطة بالفئة الفرعية
         data.addAll(response['data'] ?? []);
+        await fetchRatingsForItems();
       } else {
         statusRequest = StatusRequest.failure;
       }
     }
     update();
+  }
+
+  Map<int, Map<String, dynamic>> ratings = {}; // لتخزين تقييمات العناصر
+
+  Future<void> fetchRatingsForItems() async {
+    for (var item in data) {
+      var itemId = item['items_id'];
+      var response = await itemsData.getRateItem(itemId.toString());
+      if (response['status'] == "success") {
+        ratings[itemId] = {
+          "average": double.parse(response['data']['average_rating']),
+          "count": response['data']['review_count']
+        };
+      }
+    }
+    update(); // لتحديث الواجهة بعد جلب التقييمات
   }
 
 

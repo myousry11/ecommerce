@@ -5,15 +5,15 @@ import 'package:get/get.dart';
 
 Future<bool>  alertExitApp () {
    Get.defaultDialog(
-    title:  "تنبيه",
-    middleText: "هل تريد الخروج من التطبيق",
+    title:  "159".tr,
+    middleText: "191".tr,
     actions: [
       ElevatedButton(onPressed: (){
         exit(0);
-      }, child: Text("Confirm")),
+      }, child: Text("39".tr)),
       ElevatedButton(onPressed: (){
         Get.back();
-      }, child: Text("Cancel")),
+      }, child: Text("50".tr)),
     ],
   );
    return Future.value(true);

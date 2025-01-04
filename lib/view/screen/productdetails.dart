@@ -27,14 +27,14 @@ class ProductDetails extends GetView<ProductDetailsControllerImp> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white, // لون الخلفية
-                      shape: BoxShape.circle, // تحديد الشكل كدائرة
+                      color: Colors.white,
+                      shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white.withOpacity(0.4), // لون الظل
+                          color: Colors.white.withOpacity(0.4),
                           spreadRadius: 2,
                           blurRadius: 10,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -53,11 +53,11 @@ class ProductDetails extends GetView<ProductDetailsControllerImp> {
                 expandedHeight: 410.0,
                 floating: false,
                 pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
+                flexibleSpace: const FlexibleSpaceBar(
                   background: ProductImage(),
                 ),
               ),
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(
                 child: ProductContent(),
               ),
             ],
@@ -65,7 +65,7 @@ class ProductDetails extends GetView<ProductDetailsControllerImp> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavBar(
-        title: "Add To Cart",
+        title: "164".tr,
         onPressed: () {
            controller.addProduct(controller.itemsModel.itemsId!);
            //  controller.cartController.add();  مش هتتحط هنا

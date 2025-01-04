@@ -60,9 +60,9 @@ class EditAddressController extends GetxController {
             Get.back();
           },
           imageAsset: 'assets/icons/success.gif',
-          title: "Success!",
-          textBody: "Address has been modified successfully.",
-          textButton: "OK",
+          title: "176".tr,
+          textBody: "189".tr,
+          textButton: "182".tr,
         );
       } else {
         statusRequest = StatusRequest.failure;

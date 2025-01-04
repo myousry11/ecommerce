@@ -12,15 +12,16 @@ class CustomBottomNav extends StatelessWidget {
   final String discount;
   final TextEditingController controllerCoupon;
   final void Function()? onApplyCoupon;
-  const CustomBottomNav({super.key, required this.productPrice, required this.shipping, required this.totalPrice, required this.controllerCoupon, this.onApplyCoupon, required this.discount});
+  final void Function()? onPressedCheckOut;
+  const CustomBottomNav({super.key, required this.productPrice, required this.shipping, required this.totalPrice, required this.controllerCoupon, this.onApplyCoupon, required this.discount, this.onPressedCheckOut});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         boxShadow: [
           BoxShadow(
               color: Colors.grey.withOpacity(0.3),
@@ -38,50 +39,54 @@ class CustomBottomNav extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               controller: controllerCoupon,
               decoration: InputDecoration(
-                  hintText: "Have a code? type it here...",
-                  hintStyle: TextStyle(
+                  hintText: "143".tr,
+                  hintStyle: const TextStyle(
                     color: Colors.grey, // اللون الرمادي للنص
                     fontSize: 16, // حجم النص
                   ),
-                  suffixIcon: TextButton(
-                    onPressed: onApplyCoupon,
-                    child: Text(
-                      "Validate",
-                      style: TextStyle(
-                        color: Colors.green, // اللون الأخضر لكلمة "Validate"
-                        fontWeight: FontWeight.bold, // النص عريض
+                  suffixIcon: InkWell(
+                    onTap: onApplyCoupon,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        "144".tr,
+                        style:Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Colors.grey.withOpacity(0.4),
+                            fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ),
                   filled: true,
-                  fillColor: Colors.grey.shade100, // اللون الخلفي
+                  fillColor: Colors.grey.shade100,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12), // الحواف المستديرة
-                    borderSide: BorderSide.none, // إزالة الحدود
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
                   ),
                   isDense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10)
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10)
               ),
             ),
 
           )
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Product price", style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16)),
-              Text("$productPrice EGP", style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16)),
+              Text("141".tr, style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16)),
+              Text("$productPrice ${"62".tr}", style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16)),
             ],
           ),
-          SizedBox(height: 8),
-          CustomLineDivider(),
-          SizedBox(height: 8,),
+          const SizedBox(height: 8),
+          const CustomLineDivider(),
+          const SizedBox(height: 8,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  "Shipping",
+                  "140".tr,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
               ),
               Text(
@@ -90,14 +95,14 @@ class CustomBottomNav extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 8),
-          CustomLineDivider(),
-          SizedBox(height: 8,),
+          const SizedBox(height: 8),
+          const CustomLineDivider(),
+          const SizedBox(height: 8,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Discount",
+                "145".tr,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
               ),
               Text(
@@ -106,26 +111,26 @@ class CustomBottomNav extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 8),
-          CustomLineDivider(),
-          SizedBox(height: 8,),
+          const SizedBox(height: 8),
+          const CustomLineDivider(),
+          const SizedBox(height: 8,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  "Total Price",
+                  "146".tr,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18, color: AppColor.primaryColor, fontWeight: FontWeight.w900)
               ),
               Text(
-                  "$totalPrice EGP",
+                  "$totalPrice ${"62".tr}",
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18, color: AppColor.primaryColor, fontWeight: FontWeight.w900)
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           CustomButtonCart(
-            title: "Proceed to checkout",
-            onPressed: (){},
+            title: "147".tr,
+            onPressed: onPressedCheckOut,
           ),
         ],
       ),

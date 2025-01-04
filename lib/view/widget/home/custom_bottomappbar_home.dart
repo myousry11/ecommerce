@@ -11,7 +11,7 @@ class CustomBottomAppBarHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomeScreenControllerImp>(
       builder: (controller) => ClipRRect(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40),
           topRight: Radius.circular(40),
         ),

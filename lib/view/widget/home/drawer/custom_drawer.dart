@@ -1,3 +1,4 @@
+import 'package:ecommerce/core/constant/iconassets.dart';
 import 'package:ecommerce/view/widget/home/drawer/custom_toggle_theme.dart';
 import 'package:ecommerce/view/widget/productdetails/custom_line_divider.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.grey.shade200,
-                child: Icon(Icons.person, color: Colors.black, size: 50),
+                child: const Icon(Icons.person, color: Colors.black, size: 50),
               ),
               decoration: BoxDecoration(color: Colors.grey.shade100),
             ),
@@ -42,43 +43,43 @@ class CustomDrawer extends StatelessWidget {
               child: Column(
                 children: [
                   CustomListTile(
-                    image: 'assets/icons/favorite.png',
-                    title: 'My Favorites',
+                    image: AppIconAsset.favorite,
+                    title: '63'.tr,
                     onTap: () {
                     },
                   ),
                   const CustomLineDivider(),
                   CustomListTile(
-                    image: 'assets/icons/settings.png',
-                    title: 'Setting',
+                    image: AppIconAsset.settings,
+                    title: '64'.tr,
                     onTap: () {
                       controller.goToSettings();
                     },
                   ),
                   const CustomLineDivider(),
                   CustomListTile(
-                    image: 'assets/icons/support.png',
-                    title: 'Chat support',
+                    image: AppIconAsset.support,
+                    title: '65'.tr,
                     onTap: () {},
                   ),
-                  CustomLineDivider(),
+                  const CustomLineDivider(),
                   CustomListTile(
-                    image: 'assets/icons/info.png',
-                    title: 'About us',
+                    image: AppIconAsset.info,
+                    title: '66'.tr,
                     onTap: () {},
                   ),
-                  CustomLineDivider(),
+                  const CustomLineDivider(),
                   CustomListTile(
-                    image: 'assets/icons/exit.png',
-                    title: 'Log out',
+                    image: AppIconAsset.exit,
+                    title: '67'.tr,
                     onTap: () {
                       controller.logout();
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
-                  CustomToggleTheme(),
+                  const CustomToggleTheme(),
 
                 ],
               ),

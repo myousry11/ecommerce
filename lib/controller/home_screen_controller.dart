@@ -1,5 +1,7 @@
+import 'package:ecommerce/view/screen/orders/orders_view.dart';
 import 'package:ecommerce/view/screen/profile.dart';
 import 'package:ecommerce/view/screen/search.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +25,7 @@ class HomeScreenControllerImp extends HomeScreenController {
   List<Widget> listPage = [
     const Home(),
     const Search(),
-    Center(child: Text("Orders", style: TextStyle(fontSize: 24))),
+    Orders(),
     const Profile()
   ];
 
@@ -34,6 +36,14 @@ class HomeScreenControllerImp extends HomeScreenController {
     {"title": "Profile", "icon": Image.asset("assets/icons/user.png")},
   ];
 
+  List<String> titleAppBar = [
+    "61".tr,
+    "70".tr,
+    "71".tr,
+    "72".tr,
+  ];
+
+
   @override
   goToSettings() {
     Get.offNamed(
@@ -43,11 +53,18 @@ class HomeScreenControllerImp extends HomeScreenController {
 
   @override
   goToCart() {
-    Get.toNamed(AppRoute.cart);
+    Get.offNamed(AppRoute.cart);
+  }
+
+  getToNotifyView(){
+    Get.toNamed(AppRoute.notificationView);
   }
 
   @override
   void onInit() {
+    if (Get.arguments != null) {
+      currentPage = Get.arguments['currentPage'] ?? 0; // التأكد من التوجيه إلى Orders
+    }
     name = myServices.sharedPreferences.getString("name") ?? "Guest";
     email =
         myServices.sharedPreferences.getString("email") ?? "guest@example.com";
@@ -56,6 +73,9 @@ class HomeScreenControllerImp extends HomeScreenController {
 
   @override
   logout() {
+    String userId = myServices.sharedPreferences.getString("id")!;
+    FirebaseMessaging.instance.unsubscribeFromTopic("users");
+    FirebaseMessaging.instance.unsubscribeFromTopic("users${userId}");
     myServices.sharedPreferences.setString("step", "1");
     Get.offAllNamed(AppRoute.login);
   }

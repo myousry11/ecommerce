@@ -7,6 +7,7 @@ import 'package:ecommerce/view/widget/productdetails/custom_line_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/functions/translatedatabase.dart';
 import '../widget/cart/custom_card_item.dart';
 
 class Cart extends StatelessWidget {
@@ -20,7 +21,7 @@ class Cart extends StatelessWidget {
           builder: (controller) => ListView(
                 children: [
                   CustomAppbarSub(
-                    title: 'Your Cart',
+                    title: '142'.tr,
                     onPressed: (){
                       controller.backToHome();
                     },
@@ -35,8 +36,8 @@ class Cart extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: CartItem(
                                 imageUrl: "${controller.data[index].itemsImage}",
-                                title: "${controller.data[index].itemsName}",
-                                price: "${controller.data[index].itemsprice}",
+                                title: "${translateDatabase(controller.data[index].itemsNameAr,controller.data[index].itemsName)}",
+                                price: "${controller.data[index].itemsprice} ${"62".tr}",
                                 size: "L",
                                 color: "Cream",
                                 count: '${controller.data[index].countitems}',
@@ -62,7 +63,14 @@ class Cart extends StatelessWidget {
             },
               productPrice: "${controller.priceOrders}",
               shipping: "Freeship",
-              totalPrice: "${controller.getTotalPrice()}", controllerCoupon: controller.controllerCoupon!, discount: '${controller.discountCoupon}',)),
+              totalPrice: "${controller.getTotalPrice()}",
+            controllerCoupon: controller.controllerCoupon!,
+            discount: '${controller.discountCoupon}%',
+            onPressedCheckOut: (){
+              controller.goToCheckOut(context);
+            },
+          )
+      ),
     );
   }
 }

@@ -24,14 +24,17 @@ class CustomAdsImage extends StatelessWidget {
             ),
           ),
           // Adding text on top of the image
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              title,  // Customize this text
-              style: TextStyle(
-                color: Colors.white,  // White color for contrast
-                fontSize: 24,  // Adjust size as needed
-                fontWeight: FontWeight.bold,  // Optional: Add bold style
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                title,  // Customize this text
+                style: const TextStyle(
+                  color: Colors.white,  // White color for contrast
+                  fontSize: 24,  // Adjust size as needed
+                  fontWeight: FontWeight.bold,  // Optional: Add bold style
+                ),
               ),
             ),
           ),

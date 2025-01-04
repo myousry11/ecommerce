@@ -25,6 +25,9 @@ class AppLink {
   static const String items = '$server/items/items.php';
   static const String itemsFromSubCategory = '$server/items/items_subcategory.php';
   static const String subCat = '$server/subcategories/subcategory.php';
+  static const String rateItem = '$server/items/ratingitems.php';
+  static const String viewReview = '$server/items/viewreviews.php';
+  static const String addReview = '$server/items/addreview.php';
 
   // Cart
   static const String cartAdd = '$server/cart/add.php';
@@ -43,6 +46,23 @@ class AppLink {
 
   //Coupon
   static const String checkCoupon = '$server/coupon/checkcoupon.php';
+
+  // Checkout
+  static const String checkOut = '$server/orders/checkout.php';
+
+  //Notification
+  static const String notification  = '$server/notification.php';
+
+  //Orders
+  static const String pendingOrders = '$server/orders/pending.php';
+  static const String deliveredOrders  = '$server/orders/delivered.php';
+  static const String cancelOrders  = '$server/orders/cancel.php';
+  static const String cancelPressOrders  = '$server/orders/cancelpress.php';
+  static const String deleteOrders  = '$server/orders/delete.php';
+  static const String rateOrder  = '$server/orders/rateorder.php';
+  //Orders Details
+  static const String ordersDetails  = '$server/orders/details.php';
+
 
 
 

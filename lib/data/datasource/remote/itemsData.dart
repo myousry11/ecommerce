@@ -29,4 +29,33 @@ class ItemsData {
           (r) => r,
     );
   }
+
+  getRateItem(String id) async{
+    var response = await crud.postData(AppLink.rateItem, {"itemsid" : id.toString()});
+    return response.fold(
+          (l) => StatusRequest.serverFailure, // إعادة `StatusRequest` بدلاً من `1`
+          (r) => r,
+    );
+  }
+
+  viewReview(String id) async {
+    var response = await crud.postData(AppLink.viewReview, {"itemsid" : id.toString()});
+    return response.fold(
+          (l) => StatusRequest.serverFailure, // إعادة `StatusRequest` بدلاً من `1`
+          (r) => r,
+    );
+  }
+
+  addReview(String userId, String itemId, String rating, String comment) async{
+    var response = await crud.postData(AppLink.addReview, {
+      "itemsid" : itemId.toString(),
+      "userid" : userId.toString(),
+      "ratingvalue" : rating.toString(),
+      "comment" : comment.toString(),
+    });
+    return response.fold(
+          (l) => StatusRequest.serverFailure, // إعادة `StatusRequest` بدلاً من `1`
+          (r) => r,
+    );
+  }
 }

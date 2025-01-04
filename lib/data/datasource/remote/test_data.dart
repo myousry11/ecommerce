@@ -9,7 +9,7 @@ class TestData {
   getData() async {
     var response = await crud.postData(AppLink.test, {});
     return response.fold(
-          (l) => StatusRequest.serverFailure, // إعادة `StatusRequest` بدلاً من `1`
+          (l) => StatusRequest.serverFailure,
           (r) => r,
     );
   }

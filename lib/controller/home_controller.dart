@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:async';
 import 'package:ecommerce/core/class/statusrequest.dart';
 import 'package:ecommerce/core/functions/handlingdata_controller.dart';
 import 'package:ecommerce/core/services/services.dart';
@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../core/constant/routes.dart';
-import '../data/datasource/remote/itemsData.dart';
 
 abstract class HomeController extends GetxController {
   initialData();
@@ -22,18 +21,23 @@ class HomeControllerImp extends HomeController {
   MyServices myServices = Get.find();
   StatusRequest statusRequest = StatusRequest.none;
   HomeData homeData = HomeData(Get.find());
-  ItemsData itemsData = ItemsData(Get.find());
 
   List categories = [];
   List subCategories = [];
   List items = [];
+  List topSellingItems = []; // لتخزين العناصر الأكثر مبيعًا للفئة المحددة
   Map<String, List> categoryItems = {}; // خريطة لتخزين العناصر لكل فئة
+  Map<String, List> topSellingCategoryItems = {}; // خريطة لتخزين العناصر الأكثر مبيعًا لكل فئة
 
   String? name;
   String? email;
+
   late PageController pageController;
+  Timer? _pageTimer;
+
   int currentIndex = 0;
   String? lang;
+
 
   int selectedCat = 1;
 
@@ -50,18 +54,33 @@ class HomeControllerImp extends HomeController {
     pageController = PageController();
     getData();
     initialData();
+    _startAutoPageChange();
     super.onInit();
+  }
+
+  void _startAutoPageChange() {
+    _pageTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (pageController.hasClients) {
+        int totalPages = 3; // عدد الصور
+        int nextPage = (currentIndex + 1) % totalPages;
+        pageController.animateToPage(
+          nextPage,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+        currentIndex = nextPage;
+      }
+    });
   }
 
   void onPageChanged(int index) {
     currentIndex = index;
-    update();
   }
 
   @override
   getData() async {
     statusRequest = StatusRequest.loading;
-    var response = await homeData.getDataa(); // يتم استرجاع البيانات الخاصة بالفئات والعناصر
+    var response = await homeData.getDataa(); // استرجاع البيانات
     debugPrint("Response: $response");
     statusRequest = handlingData(response);
 
@@ -71,9 +90,18 @@ class HomeControllerImp extends HomeController {
         subCategories = response['subcategories'] ?? [];
 
         if (response['items'] != null) {
-          // ربط العناصر بالفئات الفرعية
+          // ربط العناصر بالفئات
           for (var category in categories) {
             categoryItems[category['categories_id'].toString()] = response['items']
+                .where((item) => item['items_category'] == category['categories_id'])
+                .toList();
+          }
+        }
+
+        if (response['topselling'] != null) {
+          // ربط العناصر الأكثر مبيعًا بالفئات
+          for (var category in categories) {
+            topSellingCategoryItems[category['categories_id'].toString()] = response['topselling']
                 .where((item) => item['items_category'] == category['categories_id'])
                 .toList();
           }
@@ -90,6 +118,22 @@ class HomeControllerImp extends HomeController {
     update();
   }
 
+
+  Future<void> loadCategoryData(String categoryId) async {
+    if (categoryItems.containsKey(categoryId)) {
+      items = categoryItems[categoryId] ?? [];
+    } else {
+      await getItems(categoryId);
+    }
+
+    if (topSellingCategoryItems.containsKey(categoryId)) {
+      topSellingItems = topSellingCategoryItems[categoryId] ?? [];
+    } else {
+      topSellingItems = [];
+    }
+    update();
+  }
+
   getItems(String categoryId) async {
     statusRequest = StatusRequest.loading;
     var response = await homeData.getDataa();
@@ -98,7 +142,6 @@ class HomeControllerImp extends HomeController {
     statusRequest = handlingData(response);
     if (StatusRequest.success == statusRequest) {
       if (response['status'] == "success") {
-        // تحميل العناصر الخاصة بالفئة
         categoryItems[categoryId] = response['items'] ?? [];
       } else {
         statusRequest = StatusRequest.failure;
@@ -112,36 +155,33 @@ class HomeControllerImp extends HomeController {
     selectedCat = val;
     if (categories.isNotEmpty) {
       String categoryId = categories[val]['categories_id'].toString();
+
       if (categoryItems.containsKey(categoryId)) {
-        // تحميل العناصر من الخريطة إذا كانت موجودة
         items = categoryItems[categoryId] ?? [];
       } else {
         await getItems(categoryId);
+      }
+
+      if (topSellingCategoryItems.containsKey(categoryId)) {
+        topSellingItems = topSellingCategoryItems[categoryId] ?? [];
+      } else {
+        topSellingItems = [];
       }
     }
     update();
   }
 
   @override
-  showAllItems(categoryId) async {
-    if (categoryId.isEmpty) {
-      debugPrint("Error: categoryId is empty");
-      return;
-    }
+  showAllItems(String categoryId) async {
+    if (categoryId.isEmpty) return;
 
     var response = await homeData.getDataa();
-    debugPrint("Response: $response");  // طباعة الاستجابة الكاملة
 
     if (response['status'] == "success") {
-      // تصفية الفئات الفرعية المرتبطة بالفئة فقط
       List subCategories = response['subcategories']?.where((sub) {
-        // debugPrint("Checking subcategory: ${sub['subcategories_category']} for categoryId: $categoryId");
-        return sub['subcategories_category'].toString() == categoryId;  // تأكد من أن النوع متطابق
+        return sub['subcategories_category'].toString() == categoryId;
       }).toList() ?? [];
 
-      // debugPrint("Filtered Subcategories: $subCategories");  // طباعة الفئات الفرعية بعد التصفية
-
-      // إرسال البيانات عبر Get.toNamed
       Get.toNamed(
         AppRoute.items,
         arguments: {
@@ -149,13 +189,8 @@ class HomeControllerImp extends HomeController {
           "subCategory": subCategories,
         },
       );
-    } else {
-      debugPrint("Error: Failed to fetch data.");
     }
   }
-
-
-
 
   @override
   goToPageProduct(itemsModel) {
@@ -163,8 +198,17 @@ class HomeControllerImp extends HomeController {
   }
 
   @override
+  void onReady() {
+    super.onReady();
+    if (pageController.hasClients) {
+      pageController.jumpToPage(0);
+    }
+  }
+
+  @override
   void dispose() {
     pageController.dispose();
+    _pageTimer?.cancel();
     categories.clear();
     super.dispose();
   }

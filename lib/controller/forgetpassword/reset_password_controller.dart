@@ -55,8 +55,8 @@ class ResetPasswordControllerImp extends ResetPasswordController {
         }
         else {
           Get.defaultDialog(
-            title: "Warning",
-            middleText: "Try Again",
+            title: "159".tr,
+            middleText: "186".tr,
           );
           statusRequest = StatusRequest.failure;
         }

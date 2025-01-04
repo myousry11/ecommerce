@@ -7,6 +7,8 @@ import 'package:ecommerce/data/model/itemsmodel.dart';
 import 'package:ecommerce/view/widget/search/custom_search_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../core/functions/translatedatabase.dart';
 class Search extends StatelessWidget {
   const Search({super.key});
 
@@ -52,7 +54,7 @@ class ListItemsSearch extends GetView<SearchControllerImp> {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: listDataModel.length,
         itemBuilder: (context, index){
         return InkWell(
@@ -66,17 +68,17 @@ class ListItemsSearch extends GetView<SearchControllerImp> {
                   color: Colors.black.withOpacity(0.1), // لون الظل خفيف
                   spreadRadius: 1,
                   blurRadius: 6,
-                  offset: Offset(0, 2), // موقع الظل
+                  offset: const Offset(0, 2), // موقع الظل
                 ),
               ],
               borderRadius: BorderRadius.circular(40), // تعديل الحواف ليكون أكثر دائرية
             ),
             height: 150,
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Card(
               color: AppColor.white,
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
                     Expanded(child: Image.memory(
@@ -88,19 +90,19 @@ class ListItemsSearch extends GetView<SearchControllerImp> {
                       flex: 2 ,
                         child: ListTile(
                           title: Text(
-                            listDataModel[index].itemsName!,
+                              "${translateDatabase(listDataModel[index].itemsNameAr, listDataModel[index].itemsName)}",
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           subtitle: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                  listDataModel[index].categoriesName!,
+                                "${translateDatabase(listDataModel[index].categoriesNameAr, listDataModel[index].categoriesName)}",
                                 style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14, color: Colors.grey.withOpacity(0.5)),
                               ),
-                              SizedBox(width: 10,),
+                              const SizedBox(width: 10,),
                               Text(
-                                "/ ${listDataModel[index].subcategoriesName!}",
+                                "/ ${translateDatabase(listDataModel[index].subcategoriesNameAr, listDataModel[index].subcategoriesName)}",
                                 style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14, color: Colors.grey.withOpacity(0.5)),
                               ),
                             ],

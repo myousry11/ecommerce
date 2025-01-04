@@ -12,19 +12,20 @@ class AddressViewController extends GetxController {
   StatusRequest statusRequest = StatusRequest.none;
   MyServices myServices = Get.find();
 
-  int? selectedAddressId; // لحفظ العنوان المختار
+  int? selectedAddressId;
 
+  String? lang;
   // استرجاع العنوان المختار من SharedPreferences
   void loadSelectedAddress() {
     selectedAddressId = myServices.sharedPreferences.getInt("selectedAddressId");
   }
 
   // حفظ العنوان المختار في SharedPreferences
-  void saveSelectedAddress(int addressId) {
-    selectedAddressId = addressId;
-    myServices.sharedPreferences.setInt("selectedAddressId", addressId);
-    update();
-  }
+  // void saveSelectedAddress(int addressId) {
+  //   selectedAddressId = addressId;
+  //   myServices.sharedPreferences.setInt("selectedAddressId", addressId);
+  //   update();
+  // }
 
   getData() async {
     statusRequest = StatusRequest.loading;
@@ -72,7 +73,8 @@ class AddressViewController extends GetxController {
 
   @override
   void onInit() {
-    loadSelectedAddress(); // استرجاع العنوان المختار عند بدء الشاشة
+    loadSelectedAddress();
+    lang = myServices.sharedPreferences.getString("lang");
     getData();
     super.onInit();
   }

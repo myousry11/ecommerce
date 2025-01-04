@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/class/handlingdata_view.dart';
+import '../../../../core/constant/color.dart';
 import '../../../../core/functions/valid_input.dart';
 
 class ResetPassword extends StatelessWidget {
@@ -18,6 +19,7 @@ class ResetPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
       ),

@@ -20,14 +20,14 @@ class Items extends GetView<ItemsControllerImp> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80), // ارتفاع الـ AppBar
         child: CustomAppbarSub(
-          title: "Items",
+          title: "163".tr,
           onPressed: () {
             Get.back();
           },
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(10),
         child: GetBuilder<ItemsControllerImp>(
             builder: (controller) => ListView(
               children: [
@@ -40,11 +40,11 @@ class Items extends GetView<ItemsControllerImp> {
                     gridDelegate:
                     const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.6,
+                      childAspectRatio: 0.55,
                     ),
                     itemCount: controller.data.length,
                     itemBuilder: (BuildContext context, index) {
-                      return Container(
+                      return SizedBox(
                         width: double.infinity,
                         child: CustomListItems(
                           itemsModel: ItemsModel.fromJson(controller.data[index]), active: false,

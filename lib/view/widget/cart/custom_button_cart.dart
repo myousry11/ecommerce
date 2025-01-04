@@ -12,7 +12,7 @@ class CustomButtonCart extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColor.primaryColor,
-        minimumSize: Size(double.infinity, 60),
+        minimumSize: const Size(double.infinity, 60),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
         ),

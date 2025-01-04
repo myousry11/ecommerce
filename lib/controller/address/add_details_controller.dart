@@ -60,16 +60,17 @@ class AddAddressDetailsController extends GetxController {
     if (StatusRequest.success == statusRequest) {
       if (response['status'] == "success") {
         // استدعاء AddressViewController وتحديث البيانات
-        Get.offAllNamed(AppRoute.home);
+        Get.back();
+        Get.back();
         showCustomBottomSheet(
           context: context,
           onPressed: () {
             Get.back();
           },
           imageAsset: 'assets/icons/success.gif',
-          title: "Success!",
-          textBody: "Address has been successfully set as a shipping orders",
-          textButton: "OK",
+          title: "176".tr,
+          textBody: "190".tr,
+          textButton: "182".tr,
         );
       } else {
         statusRequest = StatusRequest.failure;

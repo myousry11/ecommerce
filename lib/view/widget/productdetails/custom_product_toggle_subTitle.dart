@@ -42,13 +42,13 @@ class CustomProductToggleSubtitle extends StatelessWidget {
           curve: Curves.easeInOut,
           child: controller.isDescriptionExpanded
               ?  Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
                 horizontal: 10, vertical: 5),
             child: Text(
                 content,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, color: Colors.grey.withOpacity(0.6))),
           )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
         )
       ],
     ));

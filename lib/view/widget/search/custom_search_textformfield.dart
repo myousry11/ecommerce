@@ -1,5 +1,6 @@
 import 'package:ecommerce/core/constant/color.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomSearchTextFormField extends StatelessWidget {
   final void Function(String)? onChanged;
@@ -16,7 +17,7 @@ class CustomSearchTextFormField extends StatelessWidget {
             color: Colors.black.withOpacity(0.1), // لون الظل خفيف
             spreadRadius: 1,
             blurRadius: 6,
-            offset: Offset(0, 3), // موقع الظل
+            offset: const Offset(0, 3), // موقع الظل
           ),
         ],
         borderRadius: BorderRadius.circular(30), // تعديل الحواف ليكون أكثر دائرية
@@ -31,7 +32,7 @@ class CustomSearchTextFormField extends StatelessWidget {
             color: Colors.grey[600], // لون أيقونة البحث
             size: 24,
           ),
-          hintText: "Search",
+          hintText: "74".tr,
           hintStyle: Theme.of(context)
               .textTheme
               .bodyMedium!

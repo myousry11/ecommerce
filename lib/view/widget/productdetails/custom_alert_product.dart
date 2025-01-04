@@ -17,7 +17,7 @@ const CustomAlertProduct({super.key, required this.title, required this.text1, r
         title ,
         style: Theme.of(context).textTheme.bodyMedium,
       ),
-      content: Container(
+      content: SizedBox(
         height: 120,
         child: Column(
           children: [
@@ -34,7 +34,7 @@ const CustomAlertProduct({super.key, required this.title, required this.text1, r
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColor.white),
               ),
             ),
-            SizedBox(height: 5,),
+            const SizedBox(height: 5,),
             MaterialButton(
               onPressed: onPressed2,
               child: Text(

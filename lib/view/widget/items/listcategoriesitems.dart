@@ -58,8 +58,8 @@ class SubCategory extends GetView<ItemsControllerImp> {
       child: GetBuilder<ItemsControllerImp>(builder: (controller)=>  Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: controller.selectedCatSub == subCategoriesModel.subCategoriesId ? BoxDecoration(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: controller.selectedCatSub == subCategoriesModel.subCategoriesId ? const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(width: 3, color: AppColor.primaryColor)
                 )

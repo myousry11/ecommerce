@@ -14,8 +14,8 @@ class VerifyPassword extends GetView<VerifyPasswordControllerImp> {
 
   @override
   Widget build(BuildContext context) {
-    VerifyPasswordControllerImp controller = Get.find();
     return Scaffold(
+      backgroundColor: AppColor.white,
       appBar: AppBar(),
       body: GetBuilder<VerifyPasswordControllerImp>(
         builder: (controller) => HandlingDataRequest(

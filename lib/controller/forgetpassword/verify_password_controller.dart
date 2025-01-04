@@ -74,9 +74,9 @@ class VerifyPasswordControllerImp extends VerifyPasswordController {
 
       if (StatusRequest.success == statusRequest) {
         if (response['status'] == 'success') {
-          Get.snackbar("Success", "Code resent successfully");
+          Get.snackbar("176".tr, "187".tr);
         } else {
-          Get.snackbar("Error", response['message']);
+          Get.snackbar("171".tr, response['message']);
         }
       }
 
@@ -99,8 +99,8 @@ class VerifyPasswordControllerImp extends VerifyPasswordController {
           });
         }else{
           Get.defaultDialog(
-              title: "Warning!",
-              middleText: "Verify code not correct"
+              title: "${"159".tr}!",
+              middleText: "188".tr
           );
           statusRequest = StatusRequest.failure;
         }
